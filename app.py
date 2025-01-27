@@ -10,6 +10,7 @@ import pytz
 from datetime import datetime
 from urllib.parse import quote
 from pymongo import MongoClient
+import os
 
 app = Flask(__name__)
 
@@ -645,4 +646,4 @@ def internal_error(error):
 app.secret_key = 'la_tua_chiave_segreta_qui'  # Cambia questa con una chiave sicura
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
