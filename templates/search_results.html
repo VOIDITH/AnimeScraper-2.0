@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risultati della Ricerca - {{ query }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <div class="title-container">
+                <a href="/" class="home-link">
+                    <i class="fas fa-chevron-left"></i>
+                    <h1 class="site-title">Anime Scraper</h1>
+                </a>
+                <h2 class="site-subtitle">Ricerca</h2>
+            </div>
+            <form class="search-form" action="/search" method="GET">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" 
+                           id="search-input" 
+                           name="keyword" 
+                           placeholder="Cerca un anime..." 
+                           value="{{ query }}"
+                           autocomplete="off">
+                </div>
+            </form>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="anime-section">
+            <h2>Risultati per "{{ query }}"</h2>
+            {% if error %}
+                <div class="no-results">
+                    <p>{{ error }}</p>
+                </div>
+            {% else %}
+                <div id="results-container">
+                    <!-- Contenuto caricato dinamicamente -->
+                </div>
+            {% endif %}
+        </section>
+    </div>
+
+    <script>
+        // Funzione per creare le card degli anime
+        function createAnimeCards(data, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container || !data) return;
+            
+            container.innerHTML = '';
+            data.forEach(anime => {
+                const card = document.createElement('div');
+                card.className = 'anime-card';
+                
+                card.innerHTML = `
+                    <a href="/anime/${anime.anime_id}">
+                        <div class="anime-image">
+                            <img src="${anime.image}" alt="${anime.title}" loading="lazy">
+                            ${anime.episode ? `<div class="episode-badge">${anime.episode}</div>` : ''}
+                        </div>
+                        <div class="anime-info">
+                            <h3 class="anime-title">${anime.title}</h3>
+                        </div>
+                    </a>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchResults = {{ results|safe }};
+            const resultsContainer = document.getElementById('results-container');
+            const searchQuery = {{ query|tojson|safe }};
+
+            if (searchResults && searchResults.length > 0) {
+                resultsContainer.innerHTML = `
+                    <div class="scroll-container">
+                        <button class="scroll-btn left">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="anime-list" id="search-results-list"></div>
+                        <button class="scroll-btn right">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Usa la funzione createAnimeCards
+                createAnimeCards(searchResults, 'search-results-list');
+                
+                // Inizializza lo scroll
+                const scrollContainer = resultsContainer.querySelector('.scroll-container');
+                if (scrollContainer) {
+                    const list = scrollContainer.querySelector('.anime-list');
+                    const leftBtn = scrollContainer.querySelector('.scroll-btn.left');
+                    const rightBtn = scrollContainer.querySelector('.scroll-btn.right');
+                    
+                    leftBtn.addEventListener('click', () => {
+                        list.scrollBy({ left: -300, behavior: 'smooth' });
+                    });
+                    
+                    rightBtn.addEventListener('click', () => {
+                        list.scrollBy({ left: 300, behavior: 'smooth' });
+                    });
+                }
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <p>Nessun risultato trovato per "${searchQuery}"</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 

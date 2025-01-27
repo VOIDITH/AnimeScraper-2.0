@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeWorld Viewer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Aggiungiamo Font Awesome per le frecce -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .name {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .name:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <div class="title-container">
+                <h1 class="site-title">Anime Scraper</h1>
+                <h2 class="site-subtitle">Home</h2>
+            </div>
+            <form class="search-form" action="/search" method="GET">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" 
+                           id="search-input" 
+                           name="keyword" 
+                           placeholder="Cerca un anime..." 
+                           autocomplete="off">
+                </div>
+            </form>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Prima sezione -->
+        <section class="anime-section">
+            <h2>Più Popolari</h2>
+            <div class="scroll-container">
+                <button class="scroll-btn left">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="anime-list" id="popular-list"></div>
+                <button class="scroll-btn right">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Divisore -->
+        <div class="divider"></div>
+
+        <!-- Seconda sezione -->
+        <section class="anime-section">
+            <h2>Ultime Uscite</h2>
+            <div class="scroll-container">
+                <button class="scroll-btn left">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="anime-list" id="newest-list"></div>
+                <button class="scroll-btn right">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Divisore -->
+        <div class="divider"></div>
+
+        <!-- Sezione Calendario -->
+        <section class="anime-section">
+            <h2>Calendario Uscite - <span id="schedule-date"></span></h2>
+            <div class="schedule-container">
+                <button class="scroll-btn left">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="schedule-list" id="schedule-list"></div>
+                <button class="scroll-btn right">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Terza sezione -->
+        <section class="anime-section">
+            <h2>Ultimi Episodi</h2>
+            <div class="scroll-container">
+                <button class="scroll-btn left">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="anime-list" id="updated-list"></div>
+                <button class="scroll-btn right">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function createAnimeCards(data, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container || !data) return;
+            
+            console.log('Container ID:', containerId);
+            console.log('Data received:', data);
+            
+            container.innerHTML = '';
+            data.forEach((anime, index) => {
+                console.log(`Anime ${index}:`, anime);  // Debug log per ogni anime
+                
+                const card = document.createElement('div');
+                card.className = 'anime-card';
+                
+                // Verifica se anime_id esiste
+                if (!anime.anime_id) {
+                    console.error('anime_id mancante per:', anime);
+                    return;  // Salta questo anime se non ha un ID
+                }
+                
+                card.innerHTML = `
+                    <a href="/anime/${anime.anime_id}">
+                        <div class="anime-image">
+                            <img src="${anime.image}" alt="${anime.title}" loading="lazy">
+                            ${anime.episode ? `<div class="episode-badge">${anime.episode}</div>` : ''}
+                        </div>
+                        <div class="anime-info">
+                            <h3 class="anime-title">${anime.title}</h3>
+                        </div>
+                    </a>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Debug dei dati ricevuti
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Popular data:', {{ popular_data|safe }});
+            console.log('Newest data:', {{ newest_data|safe }});
+            console.log('Updated data:', {{ updated_data|safe }});
+
+            // Inizializza lo scrolling per ogni container
+            document.querySelectorAll('.scroll-container').forEach(container => {
+                const list = container.querySelector('.anime-list');
+                const leftBtn = container.querySelector('.scroll-btn.left');
+                const rightBtn = container.querySelector('.scroll-btn.right');
+                
+                const scrollAmount = list.clientWidth * 0.8; // Scroll dell'80% della larghezza visibile
+                
+                leftBtn.addEventListener('click', () => {
+                    list.scrollBy({
+                        left: -scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                rightBtn.addEventListener('click', () => {
+                    list.scrollBy({
+                        left: scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Popola le sezioni con i dati
+            createAnimeCards({{ popular_data|safe }}, 'popular-list');
+            createAnimeCards({{ newest_data|safe }}, 'newest-list');
+            createAnimeCards({{ updated_data|safe }}, 'updated-list');
+
+            // Popola il calendario
+            const scheduleData = {{ schedule_data|safe }};
+            if (scheduleData && scheduleData.items) {
+                document.getElementById('schedule-date').textContent = scheduleData.date;
+                
+                const scheduleList = document.getElementById('schedule-list');
+                scheduleData.items.forEach(item => {
+                    const scheduleCard = document.createElement('div');
+                    scheduleCard.className = 'schedule-card';
+                    scheduleCard.innerHTML = `
+                        <div class="schedule-time">${item.time}</div>
+                        <div class="schedule-image">
+                            <img src="${item.image}" alt="${item.title}" loading="lazy">
+                        </div>
+                        <div class="schedule-info">
+                            <h3 class="schedule-title">${item.title}</h3>
+                            <div class="schedule-episode">${item.episode_info}</div>
+                        </div>
+                    `;
+                    scheduleList.appendChild(scheduleCard);
+                });
+            }
+
+            // Aggiungi la gestione dello scroll anche per il calendario
+            const scheduleContainer = document.querySelector('.schedule-container');
+            if (scheduleContainer) {
+                const list = scheduleContainer.querySelector('.schedule-list');
+                const leftBtn = scheduleContainer.querySelector('.scroll-btn.left');
+                const rightBtn = scheduleContainer.querySelector('.scroll-btn.right');
+                
+                // Calcola quante card sono visibili
+                function getVisibleCards() {
+                    const cardWidth = 300; // Larghezza di una card del calendario
+                    const gap = 20; // Spazio tra le card
+                    return Math.floor(list.clientWidth / (cardWidth + gap));
+                }
+                
+                // Calcola lo scroll amount basato sulle card visibili
+                function getScrollAmount() {
+                    const cardWidth = 300;
+                    const gap = 20;
+                    const visibleCards = getVisibleCards();
+                    return (cardWidth + gap) * visibleCards;
+                }
+                
+                leftBtn.addEventListener('click', () => {
+                    const scrollAmount = getScrollAmount();
+                    list.scrollBy({
+                        left: -scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                rightBtn.addEventListener('click', () => {
+                    const scrollAmount = getScrollAmount();
+                    list.scrollBy({
+                        left: scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
