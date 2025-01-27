@@ -34,15 +34,13 @@ body {
     align-items: center;
     gap: 20px;
     margin: 0 auto;
-    width: fit-content;  /* Si adatta al contenuto */
 }
 
 .title-container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 8px;
     justify-content: center;
-    white-space: nowrap;
 }
 
 .site-title, .site-subtitle {
@@ -50,7 +48,8 @@ body {
     font-size: 24px;
     font-weight: 500;
     margin: 0;
-    display: inline-block;  /* Per mantenere il testo allineato */
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .site-title {
@@ -435,8 +434,8 @@ body {
     }
     
     .title-container {
-        flex-direction: column;
-        text-align: center;
+        width: 100%;
+        justify-content: center;
     }
 }
 
