@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risultati della Ricerca - {{ query }}</title>
+    <title>Search Results - {{ query }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -15,7 +15,7 @@
                     <i class="fas fa-chevron-left"></i>
                     <h1 class="site-title">Anime Scraper</h1>
                 </a>
-                <h2 class="site-subtitle">Ricerca</h2>
+                <h2 class="site-subtitle">Research</h2>
             </div>
             <form class="search-form" action="/search" method="GET">
                 <div class="search-box">
@@ -33,7 +33,7 @@
 
     <div class="container">
         <section class="anime-section">
-            <h2>Risultati per "{{ query }}"</h2>
+            <h2>Results for "{{ query }}"</h2>
             {% if error %}
                 <div class="no-results">
                     <p>{{ error }}</p>
