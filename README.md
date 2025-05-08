@@ -1,28 +1,28 @@
 ﻿# Anime Scraper
 
-Un web scraper moderno che aggrega contenuti da AnimeWorld e LiveChart, costruito con Python/Flask e un'interfaccia utente minimalista ispirata a Swift/XCode.
+A modern web scraper that aggregates content from AnimeWorld and LiveChart, built with Python/Flask and a minimalistic Swift/XCode-inspired UI.
 
-## 🚀 Caratteristiche Tecniche
+## 🚀 Technical Characteristics
 
 ### Backend (Python/Flask)
-- Web scraping avanzato con `cloudscraper` per bypassare protezioni anti-bot
-- Sistema di caching per ottimizzare le richieste
-- Gestione degli errori e logging dettagliato
-- API RESTful per la gestione dei dati degli anime
+- Advanced web scraping with `cloudscraper` to bypass anti-bot protections
+- Caching system to optimize requests
+- Error handling and detailed logging
+- RESTful API for anime data management
 
 ### Frontend (HTML/CSS/JavaScript)
-- Design responsive ottimizzato per mobile e desktop
-- Interfaccia utente minimalista in stile Swift/XCode
-- Scroll orizzontale fluido con snap points
-- Lazy loading delle immagini per prestazioni ottimizzate
+- Responsive design optimized for mobile and desktop
+- Minimalist Swift/XCode style UI
+- Smooth horizontal scrolling with snap points
+- Lazy loading of images for optimized performance
 
-### Sezioni Principali
-1. **Più Popolari**: Scraping da `animeworld.so/filter?sort=6`
-2. **Ultime Uscite**: Scraping da `animeworld.so/newest`
-3. **Calendario Giornaliero**: Integrazione con `livechart.me/schedule`
-4. **Ultimi Episodi**: Scraping da `animeworld.so/updated`
+### Main Sections
+1. **Most Popular**: Scraped from `animeworld.so/filter?sort=6`
+2. **Latest Releases**: Scraped from `animeworld.so/newest`
+3. **Daily Calendar**: Integration with `livechart.me/schedule`
+4. **Latest Episodes**: Scraped from `animeworld.so/updated`
 
-## 🛠 Tecnologie Utilizzate
+## 🛠 Technologies Use
 
 - **Backend**:
   - Python 3.x
@@ -40,38 +40,38 @@ Un web scraper moderno che aggrega contenuti da AnimeWorld e LiveChart, costruit
 
 ## 📱 Responsive Design
 
-- Layout fluido che si adatta a diverse dimensioni dello schermo
-- Breakpoints ottimizzati per:
-  - Desktop (> 768px)
-  - Tablet (≤ 768px)
-  - Mobile (≤ 480px)
-- Controlli touch-friendly su dispositivi mobili
+- Fluid layout that adapts to different screen sizes
+- Optimized breakpoints for:
+- Desktop (> 768px)
+- Tablet (≤ 768px)
+- Mobile (≤ 480px)
+- Touch-friendly controls on mobile devices
 
-## 🔍 Funzionalità di Ricerca
+## 🔍 Search Features
 
-- Ricerca in tempo reale degli anime
-- Risultati formattati in cards responsive
-- Gestione degli errori e stati di caricamento
+- Real-time anime search
+- Results formatted in responsive cards
+- Error handling and loading states
 
 ## 🎨 UI/UX Features
 
-- Tema scuro moderno
-- Animazioni fluide
-- Scroll orizzontale con controlli intuitivi
-- Cards con hover effects
-- Loading states e gestione errori
+- Modern dark theme
+- Smooth animations
+- Horizontal scroll with intuitive controls
+- Cards with hover effects
+- Loading states and error handling
 
-## 📦 Struttura del Progetto
-La struttura del progetto è organizzata come segue:
-- `static/`: Contiene i file statici
-  - `css/`: Stili CSS
-  - `js/`: Script JavaScript
-- `templates/`: Contiene i template HTML
-- `app.py`: File principale dell'applicazione Flask
+## 📦 Project Structure
+The project structure is organized as follows:
+- `static/`: Contains static files
+- `css/`: CSS styles
+- `js/`: JavaScript scripts
+- `templates/`: Contains HTML templates
+- `app.py`: Main file of the Flask application
 
 ## 🚀 Performance
 
-- Lazy loading delle immagini
-- Caching dei dati
-- Ottimizzazione delle richieste API
-- Gestione efficiente dello scroll
+- Lazy image loading
+- Data caching
+- API request optimization
+- Efficient scroll management

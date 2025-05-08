@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Errore del Server</title>
+    <title>Server Error</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="error-container">
-        <h1>500 - Errore del Server</h1>
-        <p>Si è verificato un errore durante l'elaborazione della richiesta.</p>
-        <a href="{{ url_for('home') }}" class="back-button">Torna alla Home</a>
+        <h1>500 - Server Error</h1>
+        <p>An error occurred while processing your request.</p>
+        <a href="{{ url_for('home') }}" class="back-button">Return to Home</a>
     </div>
 </body>
 </html> 
